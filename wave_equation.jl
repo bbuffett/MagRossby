@@ -25,7 +25,7 @@ function wave_equation(m,M,y)
 # size of matrix system
 n = length(y);
 
-# evaluate first and second derivatives
+# matrices defining first and second derivatives
 d1,d2 = derivatives(y);
 
 # assemble matrix a1 (second derivative)
