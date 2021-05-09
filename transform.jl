@@ -23,21 +23,21 @@ f = sqrt.(yc2);
 bx = bxp .* f;
 by = byp ./ f;
 
-# impose boundary condition at pole y = 1
-last_lat = asin(y[end]);
-dlat = (pi/2 - last_lat)/4;
-lat_intpol = collect(last_lat : dlat : pi/2);
-y_intpol = sin.(lat_intpol);
-yc = -(y_intpol.*y_intpol .- 1.0);
-yc_end = 1.0 - y[end]^2;
-by_intpol = by[end] * (yc / yc_end);
-bx_intpol = bx[end] * (yc / yc_end);
+# append grid point at the pole y=1
+ ynew = copy(y);
+ push!(ynew,1.0);
 
-# append extrapolation to solution
-ynew = copy(y);
-append!(ynew,y_intpol[2:end]);
-append!(bx,bx_intpol[2:end]);
-append!(by,by_intpol[2:end]);
+# append solution at the pole
+  if (m > 1)
+    push!(bx,0.0);
+    push!(by,0.0);
+  else
+    bxend = bx[end];
+    byend = by[end];
+    push!(bx,bxend);
+    push!(by,byend);
+  end
+    
 
 
 return ynew,bx,by
