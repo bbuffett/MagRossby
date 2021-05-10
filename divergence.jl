@@ -24,20 +24,23 @@ adiv = Array{Float64,3}(undef,length(t),length(colat),length(long));
 
 # radius of core-mantle boundary
 rcmb = 3480.0;  #  in km
+   
+# flag grid points near the pole
+nlat = length(colat);
+nlong = length(long);
+k = Int(floor(0.08*nlat));
 
 # loop over times
 for i = 1 : length(t)
 
 #  loop over latitude and longitude
-   nlat = length(colat)
-   nlong = length(long)
+  
    for j = 1 : nlat
 
-      rsinth = rcmb * sin(colat[j]);
-      if (j < 0.1*nlat) || (j > nlat - 0.1*nlat)
-         f = sin(colat[j]);
+      if (j < k) || (j > nlat - k)
+         rsinth = rcmb * sin(colat[k]);
       else
-         f = 1.0;
+         rsinth = rcmb * sin(colat[j]);
       end
 
       for k = 1 : nlong
@@ -45,41 +48,41 @@ for i = 1 : length(t)
          # derivative of vth wrt colatitude
          if (j == 1)
            dlat = colat[j+1];
-           dvth = f*(sin(colat[j+1])*vth[i,j+1,k] -
+           dvth = (sin(colat[j+1])*vth[i,j+1,k] -
                      0.0) / (rsinth * dlat);
-           dath = f*(sin(colat[j+1])*ath[i,j+1,k] -
+           dath = (sin(colat[j+1])*ath[i,j+1,k] -
                      0.0) / (rsinth * dlat);
 
          elseif (j == nlat )
             dlat = pi - colat[j-1];
-            dvth = f*(0.0 - sin(colat[j-1])*vth[i,j-1,k] ) /
+            dvth = (0.0 - sin(colat[j-1])*vth[i,j-1,k] ) /
                     (rsinth * dlat);
-            dath = f*(0.0 - sin(colat[j-1])*ath[i,j-1,k] ) /
+            dath = (0.0 - sin(colat[j-1])*ath[i,j-1,k] ) /
                     (rsinth * dlat);
 
          else
             dlat = colat[j+1] - colat[j-1];
-            dvth = f*(sin(colat[j+1])*vth[i,j+1,k] -
+            dvth = (sin(colat[j+1])*vth[i,j+1,k] -
                   sin(colat[j-1])*vth[i,j-1,k])/(rsinth*dlat);
-            dath = f*(sin(colat[j+1])*ath[i,j+1,k] -
+            dath = (sin(colat[j+1])*ath[i,j+1,k] -
                   sin(colat[j-1])*ath[i,j-1,k])/(rsinth*dlat);
          end
 
          # derivative of vphhi wrt longitude
         if (k == 1)
             dlong = long[k+1] - (long[nlong]-2*pi);
-            dvph = f*(vph[i,j,k+1] - vph[i,j,nlong])/(rsinth * dlong);
-            daph = f*(aph[i,j,k+1] - aph[i,j,nlong])/(rsinth * dlong);
+            dvph = (vph[i,j,k+1] - vph[i,j,nlong])/(rsinth * dlong);
+            daph = (aph[i,j,k+1] - aph[i,j,nlong])/(rsinth * dlong);
 
          elseif (k == nlong)
             dlong = long[1] + 2*pi - long[k-1];
-            dvph = f*(vph[i,j,1] - vph[i,j,k-1])/(rsinth * dlong);
-            daph = f*(aph[i,j,1] - aph[i,j,k-1])/(rsinth * dlong);
+            dvph = (vph[i,j,1] - vph[i,j,k-1])/(rsinth * dlong);
+            daph = (aph[i,j,1] - aph[i,j,k-1])/(rsinth * dlong);
 
          else
             dlong = long[k+1] - long[k-1];
-            dvph = f*(vph[i,j,k+1] - vph[i,j,k-1])/(rsinth * dlong);
-            daph = f*(aph[i,j,k+1] - aph[i,j,k-1])/(rsinth * dlong);
+            dvph = (vph[i,j,k+1] - vph[i,j,k-1])/(rsinth * dlong);
+            daph = (aph[i,j,k+1] - aph[i,j,k-1])/(rsinth * dlong);
          end
 
          # divergence
