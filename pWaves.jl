@@ -8,8 +8,10 @@ function pWaves(ngrid,H,Np,Br,m,T)
 # a second grid array is stored as latitude for plotting.
 # The radial magnetic field is assumed to be constant
 # over the surface of the CMB. The same governing equation
-# describe equatorial MAC waves in a spherical geometry. The
+# describes equatorial MAC waves in a spherical geometry. The
 # two types of waves are distinguished by the sign of the frequency.
+# The equatorial waves travel eastward (positive freq.) and the
+# high latitude waves travel westward (negative freq.)
 #
 # input
 #
