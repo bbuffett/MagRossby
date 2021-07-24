@@ -7,7 +7,9 @@ function pWaves(ngrid,H,Np,Br,m,T)
 # The meridional coordinate is y = cos(colat), although
 # a second grid array is stored as latitude for plotting.
 # The radial magnetic field is assumed to be constant
-# over the surface of the CMB.
+# over the surface of the CMB. The same governing equation
+# describe equatorial MAC waves in a spherical geometry. The
+# two types of waves are distinguished by the sign of the frequency.
 #
 # input
 #
