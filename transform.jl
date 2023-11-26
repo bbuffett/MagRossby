@@ -32,8 +32,8 @@ by = byp ./ f;
     push!(bx,0.0);
     push!(by,0.0);
   else
-    bxend = bx[end];
-    byend = by[end];
+    bxend = 2*bx[end]-bx[end-1];  # interpolate
+    byend = 2*by[end]-by[end-1];
     push!(bx,bxend);
     push!(by,byend);
   end
